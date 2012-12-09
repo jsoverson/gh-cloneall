@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+
+"use strict";
+
+// process
+var $0 = process.argv.shift(),
+    $1 = process.argv.shift();
+
+// args
+var org = process.argv.shift();
+var dir = process.argv.shift();
+
+// node lib
+var path = require('path'),
+    fs = require('fs'),
+    child_process = require('child_process');
+
+// vendor lib
+var request = require('request');
+
+if (!org) {
+  console.log("Usage : %s %s <github account> [directory]\n\n" +
+    "  github account : github user or organization to clone from\n" +
+    "  directory      : directory to mk & cd to before cloning",
+    $0, path.basename($1));
+  process.exit(1);
+}
+
+if (dir) {
+  console.log('Making directory "%s"', dir);
+  try { fs.mkdirSync(dir); }
+  catch(e) {
+    console.log(e.toString());
+    process.exit(e.errno);
+  }
+  console.log('Changing to directory "%s"', dir);
+  process.chdir(dir);
+}
+
+function logBuffer(data) {
+  console.log(data.toString());
+}
+
+function handleResponse(body) {
+  var repos = JSON.parse(body);
+  var repoIndex = 0;
+  var clone = function() {
+    var repo = repos[repoIndex++];
+    if (!repo) {
+      console.log('Finished, exiting');
+      process.exit(0);
+    }
+    console.log('Cloning %s', repo.clone_url);
+    var child = child_process.spawn('git',['clone',repo.clone_url]);
+    child.stdout.on('data',logBuffer);
+    child.stderr.on('data',logBuffer);
+    child.on('exit',clone);
+  };
+  clone();
+}
+
+request('https://api.github.com/orgs/'+org+'/repos',function(err,res,body){
+  if (res.statusCode === 200) return handleResponse(body);
+  console.log('Organization not found, trying user');
+  request('https://api.github.com/users/'+org+'/repos',function(err,res,body){
+    if (res.statusCode === 200) return handleResponse(body);
+    console.log('User not found, exiting');
+    process.exit(2);
+  });
+});
+

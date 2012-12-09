@@ -1,0 +1,40 @@
+{
+  "name": "gh-cloneall",
+  "description": "Clone all repos from a user or organization",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jsoverson/gh-cloneall",
+  "author": {
+    "name": "Jarrod Overson",
+    "email": "jsoverson@gmail.co"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "gh-cloneall": "bin/gh-cloneall"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jsoverson/gh-cloneall.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jsoverson/gh-cloneall/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/jsoverson/gh-cloneall/blob/master/LICENSE-MIT"
+    }
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.0a"
+  },
+  "keywords": [
+    "github",
+    "clone"
+  ]
+}
