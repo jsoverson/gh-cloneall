@@ -18,6 +18,11 @@ var path = require('path'),
 // vendor lib
 var request = require('request');
 
+var pkg = require('../package.json');
+
+var userAgent = 'gh-cloneall/' + pkg.version + '(https://github.com/jsoverson/gh-cloneall)';
+request = request.defaults({headers: { 'User-Agent': userAgent }});
+
 if (!org) {
   console.log("Usage : %s %s <github account> [directory]\n\n" +
     "  github account : github user or organization to clone from\n" +

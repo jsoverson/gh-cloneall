@@ -31,10 +31,14 @@
     "test": "grunt"
   },
   "devDependencies": {
-    "grunt": "~0.4.0a"
+    "grunt": "~0.4.0a",
+    "grunt-contrib-jshint": "^0.10.0"
   },
   "keywords": [
     "github",
     "clone"
-  ]
+  ],
+  "dependencies": {
+    "request": "^2.51.0"
+  }
 }
